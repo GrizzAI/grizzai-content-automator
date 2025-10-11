@@ -1,6 +1,14 @@
 # 🐻 GrizzAI Content Automator — *AI with Bite*
 
-**Live Demo:** [https://grizzai.github.io/grizzai-content-automator/](https://grizzai.github.io/grizzai-content-automator/)
+**Live Demo:** [https://grizzai.github.io/grizzai-content-automator/](https://grizzai.github.io/grizzai-content-automator/)<p align="center">
+  <img src="./grizzai-content-automator.png" alt="GrizzAI Content Automator Screenshot" width="800">
+</p>
+
+<p align="center"><em>AI with Bite — A fast, no-fluff content generator for creators, freelancers, and small businesses.</em></p>
+
+---
+
+
 
 ---
 
