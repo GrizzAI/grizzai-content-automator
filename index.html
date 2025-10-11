@@ -2,122 +2,267 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GrizzAI Content Automator — AI with Bite</title>
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial;
-      background: #0b0b0f;
-      color: #e9eef7;
-      line-height: 1.45;
-      text-align: center;
-      padding: 50px 20px;
+    :root {
+      --bg:#0b0b0f; --card:#13131a; --muted:#9aa3b2; --text:#e9eef7;
+      --gold:#f5c542; --blue:#3aa7ff;
     }
-    h1 { color: #f5c542; margin-bottom: 10px; }
-    h2 { color: #3aa7ff; font-weight: 400; }
-    .card {
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,.3);
-      margin: 20px auto;
-      padding: 20px;
-      max-width: 700px;
-      text-align: left;
-    }
-    textarea, input, select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,.2);
-      background: #13131a;
-      color: #e9eef7;
-    }
-    button {
-      background: linear-gradient(135deg,#f5c542,#3aa7ff);
-      border: none;
-      color: #0a0a0a;
-      font-weight: 700;
-      padding: 12px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    #output { margin-top: 30px; white-space: pre-wrap; text-align: left; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:#0b0b0f;color:#e9eef7;line-height:1.45}
+    .wrap{max-width:920px;margin:0 auto;padding:28px 16px 60px}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    header .badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--blue))}
+    h1{margin:0;font-size:1.25rem} .sub{color:var(--muted);font-size:.95rem}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:860px){.grid{grid-template-columns:1fr}}
+    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px}
+    .card h2{margin:0;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:1rem}
+    .card .body{padding:14px 16px}
+    label{display:block;margin-bottom:6px;color:var(--muted);font-size:.92rem}
+    textarea,input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#13131a;color:#e9eef7}
+    textarea{min-height:96px;resize:vertical}
+    .checks{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px}
+    @media (max-width:600px){.checks{grid-template-columns:repeat(2,1fr)}}
+    .check{display:flex;align-items:center;gap:8px;background:#13131a;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 10px}
+    .actions{display:flex;align-items:center;gap:12px;margin-top:8px}
+    .btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),var(--blue))}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .ghost{border:1px solid rgba(255,255,255,.15);background:transparent;color:#e9eef7}
+    .loader{display:none;align-items:center;gap:8px;color:var(--muted)}
+    .loader.show{display:flex}
+    .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;animation:bounce 1s infinite ease-in-out}
+    .dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+    @keyframes bounce{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
+    .platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:860px){.platforms{grid-template-columns:1fr}}
+    .p-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+    .p-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .p-name{font-weight:700}
+    .copy{border:1px solid rgba(255,255,255,.16);background:transparent;color:#e9eef7;border-radius:8px;padding:6px 10px;cursor:pointer}
+    .text{white-space:pre-wrap}
+    .tags{margin-top:8px;color:var(--muted);font-size:.95rem}
+    footer{margin-top:26px;text-align:center;color:var(--muted)}
+    footer b{background:linear-gradient(135deg,var(--gold),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
   </style>
 </head>
 <body>
-  <h1>GrizzAI Content Automator</h1>
-  <h2>AI with Bite</h2>
+  <div class="wrap">
+    <header>
+      <div class="badge" aria-hidden="true"></div>
+      <div>
+        <h1>GrizzAI Content Automator</h1>
+        <div class="sub">AI with Bite</div>
+      </div>
+    </header>
 
-  <div class="card">
-    <label>Core idea / message</label>
-    <textarea id="idea" placeholder="e.g. Launching GrizzAI’s new content generator..."></textarea>
+    <div class="grid">
+      <section class="card">
+        <h2>Create your brief</h2>
+        <div class="body">
+          <label for="idea">Core idea / message</label>
+          <textarea id="idea" placeholder="e.g., Launching our AI that turns one idea into platform-ready posts."></textarea>
 
-    <label>Audience</label>
-    <input id="audience" placeholder="e.g. freelancers, small businesses" />
+          <label for="audience">Audience</label>
+          <input id="audience" placeholder="e.g., freelancers, small businesses"/>
 
-    <label>Goal / CTA</label>
-    <input id="goal" placeholder="e.g. Join the waitlist at grizzai.com" />
+          <label for="goal">Goal / CTA</label>
+          <input id="goal" placeholder="e.g., Join the waitlist at grizzai.com"/>
 
-    <label>Platform</label>
-    <select id="platform">
-      <option>LinkedIn</option>
-      <option>Instagram</option>
-      <option>X</option>
-      <option>Threads</option>
-      <option>Facebook</option>
-    </select>
+          <label>Platforms</label>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="platform" value="LinkedIn" checked> LinkedIn</label>
+            <label class="check"><input type="checkbox" name="platform" value="Instagram" checked> Instagram</label>
+            <label class="check"><input type="checkbox" name="platform" value="X" checked> X</label>
+            <label class="check"><input type="checkbox" name="platform" value="Threads"> Threads</label>
+            <label class="check"><input type="checkbox" name="platform" value="Facebook"> Facebook</label>
+          </div>
 
-    <button onclick="generate()">Generate Content</button>
+          <label for="tone">Tone</label>
+          <select id="tone">
+            <option>Bold</option>
+            <option>Professional</option>
+            <option>Casual</option>
+            <option>Educational</option>
+          </select>
+
+          <div class="actions">
+            <button id="generate" class="btn">Generate Content</button>
+            <button id="clear" class="btn ghost">Clear</button>
+            <div id="loader" class="loader" aria-live="polite" aria-busy="true">
+              <span>Generating</span><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Outputs</h2>
+        <div class="body">
+          <div id="empty" style="color:#9aa3b2">Fill the brief and click <b>Generate Content</b>. Posts will appear here.</div>
+          <div id="outputs" class="platforms" hidden></div>
+        </div>
+      </section>
+    </div>
+
+    <footer>Built by <b>GrizzAI</b> — AI with Bite.</footer>
   </div>
 
-  <div id="output"></div>
-
-  <footer style="margin-top:40px;color:#9aa3b2">
-    Built by <strong style="background:linear-gradient(135deg,#f5c542,#3aa7ff);
-    -webkit-background-clip:text;color:transparent;">GrizzAI</strong> — AI with Bite
-  </footer>
-
   <script>
-    async function generate() {
-      const idea = document.getElementById('idea').value.trim();
-      const audience = document.getElementById('audience').value.trim();
-      const goal = document.getElementById('goal').value.trim();
-      const platform = document.getElementById('platform').value.trim();
-      if(!idea || !audience || !goal) {
-        alert('Please fill out all fields first.');
-        return;
-      }
-      document.getElementById('output').textContent = 'Generating...';
+    /* ---------- Utilities ---------- */
+    const $ = s => document.querySelector(s);
+    const genBtn = () => $('#generate');
+    const loader = () => $('#loader');
 
-      // --- Basic OpenAI call (replace with your own key) ---
-      const apiKey = localStorage.getItem('OPENAI_API_KEY') || prompt('Enter your OpenAI API key');
-      if(!apiKey) return alert('Missing API key.');
+    function setLoading(v){
+      if(v){ genBtn().setAttribute('disabled','disabled'); genBtn().textContent='Generating…'; loader().classList.add('show'); }
+      else { genBtn().removeAttribute('disabled'); genBtn().textContent='Generate Content'; loader().classList.remove('show'); }
+    }
+
+    async function copyText(text, btn){
+      try{ await navigator.clipboard.writeText(text); const t=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=t,1200); }
+      catch{ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1200); }
+    }
+
+    function getBrief(){
+      const idea = $('#idea').value.trim();
+      const audience = $('#audience').value.trim();
+      const goal = $('#goal').value.trim();
+      const tone = $('#tone').value.trim() || 'Bold';
+      const platforms = Array.from(document.querySelectorAll('input[name="platform"]:checked')).map(e=>e.value);
+      return {idea,audience,goal,tone,platforms};
+    }
+
+    function validate(b){
+      const errs=[];
+      if(!b.idea) errs.push('Core idea / message is required.');
+      if(!b.audience) errs.push('Audience is required.');
+      if(!b.goal) errs.push('Goal / CTA is required.');
+      if(!b.platforms.length) errs.push('Select at least one platform.');
+      return errs;
+    }
+
+    /* ---------- Platform rules & prompt ---------- */
+    function rulesFor(platform){
+      if(platform==='LinkedIn') return '120–220 words. 1–3 short paragraphs + 1 snappy CTA line at end. Bold the CTA line using ** **. Include 3–5 hashtags (industry + audience + benefit). No truncation.';
+      if(platform==='Instagram') return 'Hook line + 2–3 compact lines + CTA. 8–15 hashtags, mix broad+niche, space out (no wall). No truncation.';
+      if(platform==='X') return '≤240 characters including spaces. Reserve for 1–2 hashtags. Provide an optional ALT variant string if space allows. No truncation.';
+      if(platform==='Threads') return '280–500 characters, skimmable short lines, include 2–4 hashtags. No truncation.';
+      if(platform==='Facebook') return '60–140 words, conversational. End with CTA line and bold it using ** **. Include 2–4 relevant hashtags. No truncation.';
+      return '';
+    }
+
+    function promptFor(platform, brief){
+      return `Platform: ${platform}
+Tone: ${brief.tone}
+Brand: GrizzAI (optional tagline: "AI with Bite" — use sparingly at the end of 1 post)
+Core idea: ${brief.idea}
+Audience: ${brief.audience}
+Goal/CTA: ${brief.goal}
+
+Strict platform formatting rules: ${rulesFor(platform)}
+General: Short sentences. Strong verbs. Human. No hype fluff. No jargon walls. Never invent facts. Always include an explicit CTA.
+Hashtag policy: Build from topic, audience, outcome. Mix 70% niche + 30% broad. Avoid banned or odd tags.
+
+Return ONLY valid JSON exactly like:
+{ "text": "<post text>", "hashtags": ["#tag1", "#tag2"], "alt": "<alt text for X only (optional)>" }`;
+    }
+
+    /* ---------- OpenAI ---------- */
+    async function callOpenAI(platform, brief){
+      const apiKey = localStorage.getItem('OPENAI_API_KEY') || prompt('Enter your OpenAI API key (stored locally):');
+      if(!apiKey) throw new Error('Missing API key');
       localStorage.setItem('OPENAI_API_KEY', apiKey);
 
       const body = {
         model: 'gpt-4o-mini',
         messages: [
-          {role:'system',content:'You are GrizzAI Content Automator — confident, clear, results-driven, human. Short sentences. Strong verbs. No fluff.'},
-          {role:'user',content:`Platform: ${platform}\nIdea: ${idea}\nAudience: ${audience}\nGoal/CTA: ${goal}\nCreate a short, platform-optimized post with a clear CTA.`}
-        ]
+          { role:'system', content:'You are GrizzAI Content Automator. Voice: confident, clear, results-driven, human. Short sentences. Strong verbs. No fluff. Never invent facts. Avoid clickbait. Always include a clear CTA.' },
+          { role:'user', content: promptFor(platform, brief) }
+        ],
+        temperature: 0.7
       };
-      try {
-        const res = await fetch('https://api.openai.com/v1/chat/completions',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
-          body:JSON.stringify(body)
-        });
-        if(!res.ok) throw new Error('Request failed.');
-        const data = await res.json();
-        const content = data.choices?.[0]?.message?.content || '(No output)';
-        document.getElementById('output').textContent = content.trim();
-      } catch(e) {
-        document.getElementById('output').textContent = 'Error: '+e.message;
-      }
+
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+        body: JSON.stringify(body)
+      });
+      if(res.status===429) throw new Error('RATE_LIMIT');
+      if(!res.ok) throw new Error('API error');
+
+      const data = await res.json();
+      const raw = data?.choices?.[0]?.message?.content || '';
+      // Extract JSON even if the model adds prose
+      const s = raw.indexOf('{'); const e = raw.lastIndexOf('}');
+      const jsonStr = (s!==-1 && e!==-1 && e>s) ? raw.slice(s,e+1) : raw;
+      return JSON.parse(jsonStr); // { text, hashtags, alt? }
     }
+
+    /* ---------- Render ---------- */
+    function platformCard(platform, payload){
+      const card = document.createElement('div'); card.className='p-card';
+      const head = document.createElement('div'); head.className='p-head';
+      const name = document.createElement('div'); name.className='p-name'; name.textContent = platform;
+      const copy = document.createElement('button'); copy.className='copy'; copy.textContent='Copy';
+      head.appendChild(name); head.appendChild(copy); card.appendChild(head);
+
+      const txt = document.createElement('div'); txt.className='text';
+      let content = payload.text || '';
+      if(platform==='LinkedIn' || platform==='Facebook'){
+        content = content.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+        txt.innerHTML = content.replace(/\n/g,'<br>');
+      } else {
+        txt.textContent = content;
+      }
+      card.appendChild(txt);
+
+      if(payload.alt && platform==='X'){
+        const alt = document.createElement('div'); alt.className='text'; alt.style.marginTop='8px';
+        alt.textContent = 'ALT: ' + payload.alt; card.appendChild(alt);
+      }
+
+      if(Array.isArray(payload.hashtags) && payload.hashtags.length){
+        const tags = document.createElement('div'); tags.className='tags';
+        tags.textContent = payload.hashtags.join(' ');
+        card.appendChild(tags);
+      }
+
+      const full = payload.hashtags?.length ? `${payload.text}\n\n${payload.hashtags.join(' ')}` : payload.text;
+      copy.addEventListener('click',()=>copyText(full, copy));
+      return card;
+    }
+
+    async function renderAll(brief){
+      const out = $('#outputs'); out.innerHTML=''; $('#empty').hidden=true; out.hidden=false; setLoading(true);
+      try{
+        for(const p of brief.platforms){
+          const payload = await callOpenAI(p, brief);
+          out.appendChild(platformCard(p, payload));
+        }
+      } finally { setLoading(false); }
+    }
+
+    /* ---------- Handlers ---------- */
+    $('#generate').addEventListener('click', async () => {
+      const brief = getBrief();
+      const errs = validate(brief);
+      if(errs.length) return alert('Please fix:\n' + errs.join('\n'));
+      try { await renderAll(brief); }
+      catch(e){
+        if(String(e.message)==='RATE_LIMIT') alert('You hit the rate limit. Give it a moment and try again.');
+        else alert('Error: ' + e.message);
+      }
+    });
+
+    $('#clear').addEventListener('click', () => {
+      $('#idea').value=''; $('#audience').value=''; $('#goal').value='';
+      document.querySelectorAll('input[name="platform"]').forEach(c=>c.checked=false);
+      document.querySelector('input[value="LinkedIn"]').checked=true;
+      document.querySelector('input[value="Instagram"]').checked=true;
+      document.querySelector('input[value="X"]').checked=true;
+      $('#outputs').innerHTML=''; $('#outputs').hidden=true; $('#empty').hidden=false;
+    });
   </script>
 </body>
 </html>
