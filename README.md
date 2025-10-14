@@ -1,4 +1,5 @@
 # 🐻 GrizzAI Content Automator — *AI with Bite*
+#### Built by **KJ Krueger** — Founder of **GrizzAI**
 
 <p align="center">
   <img src="./grizzai-logo-placeholder.png" alt="GrizzAI Logo" width="200"><br>
