@@ -234,5 +234,3 @@ Bold tools for creators, entrepreneurs, and doers.
 
 > © 2025 GrizzAI. All rights reserved.
 
-> © 2025 GrizzAI. All rights reserved.
-
