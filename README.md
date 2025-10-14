@@ -169,6 +169,70 @@ Join the early-access list at grizzai.com (beta).
 Create content faster with GrizzAI’s AI-powered generator. Perfect for freelancers and small business owners. Join the early-access list today at grizzai.com.  
 #ContentCreation #Freelancers
 -
+---
+
+## ⚡ How It Works
+
+The **GrizzAI Content Automator** takes one simple idea or message and transforms it into fully formatted, platform-ready posts.
+
+1. **Enter your content brief**
+   - Core idea or message
+   - Audience
+   - Goal or call to action
+   - Platform selection
+   - Tone of voice
+
+2. **Click “Generate Content”**
+   - The app connects to the OpenAI API (or uses a built-in simulator for testing).
+   - It automatically applies strict formatting rules for each platform.
+
+3. **Review and Copy**
+   - Each platform post appears in its own clean card.
+   - Use the “Copy” button to grab your post and share it instantly.
+
+💡 *No backend. No accounts. 100% browser-based. Everything runs locally on your device.*
+
+---
+
+## 🧭 Roadmap
+
+This is the **MVP (Minimum Viable Product)** for the GrizzAI Content Automator — now fully live on GitHub Pages.  
+Here’s what’s coming next:
+
+- [ ] **Add Beta Signup Form** → Collect user emails directly in-app  
+- [ ] **UI Polish Pass** → More gold/blue styling, cleaner spacing  
+- [ ] **Results Showcase** → Publicly display real examples and case studies  
+- [ ] **User Presets** → Save preferred tones and platform selections  
+- [ ] **Monetization Layer** → Package tool tiers and launch GrizzAI Pro  
+- [ ] **Full Brand Launch** → LinkedIn + Landing Page integration
+
+---
+
+## 🖼️ Preview (Coming Soon)
+
+<p align="center">
+  <img src="./grizzai-logo-placeholder.png" alt="GrizzAI Logo Placeholder" width="240">
+</p>
+
+> *A modern gold-and-blue theme on black — AI with Bite.*
+
+---
+
+## 🏁 Summary
+
+GrizzAI is designed to help creators, freelancers, and small businesses **save time and look professional online** — without spending hours writing posts.
+
+> “Turn one idea into five platform-ready posts — instantly.”
+
+---
+
+## 💪 Built By
+**GrizzAI** — *AI with Bite*  
+Bold tools for creators, entrepreneurs, and doers.
+
+---
+
+> © 2025 GrizzAI. All rights reserved.
 
 > © 2025 GrizzAI. All rights reserved.
 
