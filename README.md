@@ -4,7 +4,7 @@
 [👤 Connect with KJ Krueger](https://www.linkedin.com/in/kj-krueger/)  
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GrizzAI/grizzai-content-automator/main/grizzai-logo.png" alt="GrizzAI Logo" width="160">
+  <img src="https://raw.githubusercontent.com/GrizzAI/grizzai-content-automator/main/grizzai-content-automator.png" alt="GrizzAI Logo" width="200">
 </p>
 
 
