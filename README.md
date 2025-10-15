@@ -68,7 +68,24 @@ Create content faster with GrizzAI’s AI-powered generator. Perfect for freelan
 Join the early-access list today at grizzai.com.  
 #ContentCreation #Freelancers
 
----
+---⚙️ Tech Stack
+<p align="center"> <img src="https://img.shields.io/badge/Frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-blue?style=for-the-badge" alt="Frontend: HTML CSS JavaScript"> <img src="https://img.shields.io/badge/AI%20Engine-OpenAI%20GPT--4-blueviolet?style=for-the-badge" alt="AI Engine: OpenAI GPT-4"> <img src="https://img.shields.io/badge/Hosting-GitHub%20Pages-lightgrey?style=for-the-badge" alt="Hosting: GitHub Pages"> </p>
+🧩 Integrations
+
+Frontend: HTML, CSS, JavaScript
+
+AI Engine: OpenAI API (gpt-4o-mini)
+
+Hosting: GitHub Pages
+
+💪 Built By
+
+GrizzAI — AI with Bite
+
+Bold tools for creators, entrepreneurs, and doers.
+
+🧠 Powered By
+<p align="center"> <img src="https://img.shields.io/badge/OpenAI-API-blueviolet?style=flat&logo=openai&logoColor=white"> <img src="https://img.shields.io/badge/GitHub-Pages-lightgrey?style=flat&logo=github"> </p>
 
 ## 🪶 Next Steps
 ✅ Add logo image to `/grizzai-logo-placeholder.png`  
