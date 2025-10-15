@@ -1,16 +1,20 @@
 # 🐻 GrizzAI Content Automator — *AI with Bite*
 #### Built by **KJ Krueger** — Founder of **GrizzAI**
 
-[👤 Connect with KJ Krueger](https://www.linkedin.com/in/kj-krueger/)  
+[👤 Connect with KJ Krueger](https://www.linkedin.com/in/kj-krueger/)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GrizzAI/grizzai-content-automator/main/grizzai-content-automator.png" alt="GrizzAI Logo" width="200">
+  <a href="https://grizzai.github.io/grizzai-content-automator/">
+    <img src="https://raw.githubusercontent.com/GrizzAI/grizzai-content-automator/main/grizzai-content-automator.png" alt="GrizzAI Logo" width="200">
+  </a>
 </p>
 
-
 ---
+
 ### 🌐 **Live App**
 👉 [grizzai.github.io/grizzai-content-automator](https://grizzai.github.io/grizzai-content-automator)
+
+---
 
 ---
 
