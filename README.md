@@ -3,6 +3,7 @@
 
 [👤 Connect with KJ Krueger](https://www.linkedin.com/in/kj-krueger/)  
 
+
 <p align="center">
   <img src="./grizzai-logo.png" alt="GrizzAI Logo" width="140"><br><br>
   <img src="./grizzai-content-automator.png" alt="GrizzAI Content Automator App Screenshot" width="600">
