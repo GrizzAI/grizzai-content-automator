@@ -247,12 +247,6 @@ GrizzAI is designed to help creators, freelancers, and small businesses **save t
 
 ---
 
-## 💪 Built By
-**GrizzAI** — *AI with Bite*  
-Bold tools for creators, entrepreneurs, and doers.
-
----
-
 ## ✅ MVP Status Update (October 15, 2025)
 
 - **Test Run Completed:** Verified stable outputs for LinkedIn, Instagram, and X.
