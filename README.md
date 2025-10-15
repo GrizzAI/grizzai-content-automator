@@ -3,14 +3,12 @@
 
 [👤 Connect with KJ Krueger](https://www.linkedin.com/in/kj-krueger/)  
 
-
 <p align="center">
-  <img src="./grizzai-logo-placeholder.png" alt="GrizzAI Logo" width="200"><br>
-  <em>Fast, platform-ready content for creators, freelancers, and small businesses.</em>
+  <img src="./grizzai-logo.png" alt="GrizzAI Logo" width="160">
 </p>
 
----
 
+---
 ### 🌐 **Live App**
 👉 [grizzai.github.io/grizzai-content-automator](https://grizzai.github.io/grizzai-content-automator)
 
