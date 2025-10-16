@@ -117,7 +117,15 @@ This is the **MVP (Minimum Viable Product)** for the GrizzAI Content Automator �
   <img src="https://img.shields.io/badge/GitHub-Pages-lightgrey?style=flat&logo=github">
 </p>
 
----
+---💬 Founder’s Message
+
+I started GrizzAI after life threw me a curveball. A serious injury ended the kind of hands-on work I’d done my whole life — the kind that keeps you moving, sweating, and proud at the end of the day. I didn’t know what I was going to do next. But I wasn’t ready to give up. I started learning about artificial intelligence, the modern-day gold rush, and saw a chance to build something new — something that could give me back what I’d lost: freedom. GrizzAI is my way of taking control again — of turning struggle into creation and helping others do the same.
+
+GrizzAI exists for people who want to take back control — freelancers, small business owners, and creators who are tired of feeling stuck. If AI can make life easier, help someone earn a living, or give them back their time and confidence, then that’s what I want to build. I’ve spent my life fixing things with my hands. Now I get to fix problems with ideas. Helping others do the same — that’s what keeps me going.
+
+A year from now, I see GrizzAI standing on its own — a self-sustaining business that gives me and others the freedom to live life on our own terms. I want to help as many people as I can along the way — people who, like me, just need a way to get back up and keep going. GrizzAI is about more than automation or code. It’s about taking back your independence, doing something that matters, and proving that it’s never too late to rebuild.
+
+If there’s one thing I’ve learned, it’s that life can knock you flat — but you decide if you stay down. GrizzAI is my way of getting back up, and it’s proof that anyone can start over. Whether you’re chasing freedom, rebuilding from nothing, or just trying to make life a little better, I want to help you get there. We’re all in this together — and this is just the start.
 
 ## 💪 Built By
 **GrizzAI** — *AI with Bite*  
