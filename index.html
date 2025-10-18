@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -171,7 +171,7 @@ Return ONLY valid JSON exactly like:
 
     /* ---------- OpenAI ---------- */
     async function callOpenAI(platform, brief){
-      const apiKey = localStorage.getItem('') || prompt('GRIZZAI_KEY_LOCAL'Enter your OpenAI API key (stored locally):');
+      const apiKey = localStorage.getItem('OPENAI_API_KEY') || prompt('Enter your OpenAI API key (stored locally):');
       if(!apiKey) throw new Error('Missing API key');
       localStorage.setItem('', apiKey);
 
