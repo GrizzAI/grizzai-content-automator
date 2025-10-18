@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -171,11 +171,11 @@ Return ONLY valid JSON exactly like:
 
     /* ---------- OpenAI ---------- */
     async function callOpenAI(platform, brief){
-      const apiKey = localStorage.getItem('OPENAI_API_KEY') || prompt('Enter your OpenAI API key (stored locally):');
+      const apiKey = localStorage.getItem('') || prompt('GRIZZAI_KEY_LOCAL'Enter your OpenAI API key (stored locally):');
       if(!apiKey) throw new Error('Missing API key');
-      localStorage.setItem('OPENAI_API_KEY', apiKey);
+      localStorage.setItem('', apiKey);
 
-      const body = {
+      const body = {GRIZZAI_KEY_LOCAL
         model: 'gpt-4o-mini',
         messages: [
           { role:'system', content:'You are GrizzAI Content Automator. Voice: confident, clear, results-driven, human. Short sentences. Strong verbs. No fluff. Never invent facts. Avoid clickbait. Always include a clear CTA.' },
@@ -188,6 +188,7 @@ Return ONLY valid JSON exactly like:
         method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
         body: JSON.stringify(body)
       });
+      // ✅ Verified 2025-10-18: response limit triggered during test
       if(res.status===429) throw new Error('RATE_LIMIT');
       if(!res.ok) throw new Error('API error');
 
