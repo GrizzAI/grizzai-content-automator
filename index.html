@@ -23,8 +23,44 @@
     label{display:block;margin-bottom:6px;color:var(--muted);font-size:.92rem}
     textarea,input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#13131a;color:#e9eef7}
     textarea{min-height:96px;resize:vertical}
-    .checks{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px}
-    @media (max-width:600px){.checks{grid-template-columns:repeat(2,1fr)}}
+    /* --- Platform checkbox layout fix --- */
+.checks{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+@media (max-width: 900px){
+  .checks{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px){
+  .checks{ grid-template-columns: repeat(2, 1fr); }
+}
+
+.check{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#13131a;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  padding:8px 10px;
+  min-height:44px;
+  overflow:visible;
+}
+
+.check input{
+  margin:0;
+  width:18px; height:18px;
+}
+
+.check label{
+  margin:0;
+  white-space:nowrap;
+  color:var(--text);
+  font-size:0.9rem;
+  cursor:pointer;
+}
     .check{display:flex;align-items:center;gap:8px;background:#13131a;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 10px}
     .actions{display:flex;align-items:center;gap:12px;margin-top:8px}
     .btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),var(--blue))}
