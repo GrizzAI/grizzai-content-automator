@@ -1,91 +1,188 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GrizzAI Content Automator — AI with Bite</title>
+
   <style>
     :root{
       --bg:#0b0b0f; --card:#13131a; --muted:#9aa3b2; --text:#e9eef7;
-      --gold:#f5c542; --blue:#3aa7ff;
+      --gold:#f5c542; --blue:#3aa7ff; --chip:#1a1a22; --chip-border:rgba(255,255,255,.14);
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:var(--bg);color:var(--text);line-height:1.45}
-    .wrap{max-width:920px;margin:0 auto;padding:28px 16px 60px}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    header .badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--blue))}
-    h1{margin:0;font-size:1.25rem}
-    .sub{color:var(--muted);font-size:.95rem;margin:.25rem 0 0}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;
+      background:var(--bg); color:var(--text); line-height:1.45;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 16px 60px}
+
+    /* ---------- HEADER (logo + title) ---------- */
+    .hero{
+      position:relative;
+      display:flex; align-items:center; gap:16px;
+      margin-bottom:18px;
+      padding:8px 12px;
+      border-radius:14px;
+      isolation:isolate; /* lets the shimmer sit on top cleanly */
+    }
+    /* Shimmer sweep that covers BOTH the logo and the title */
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(110deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.25) 50%,
+        rgba(255,255,255,0) 100%);
+      transform:translateX(-120%);
+      pointer-events:none;
+      filter:blur(1px);
+      opacity:0;
+      animation:heroShine 2.2s ease-in-out 1.2s both; /* one sweep after load */
+    }
+    @keyframes heroShine{
+      0%   {transform:translateX(-120%); opacity:0;}
+      10%  {opacity:.55;}
+      60%  {opacity:.35;}
+      100% {transform:translateX(120%); opacity:0;}
+    }
+
+    /* Logo badge area (aligned & glowing) */
+    .badge{
+      width:48px;height:48px; flex:0 0 48px;
+      border-radius:12px;
+      background:
+        url("./grizzai-logo.png") center/90% no-repeat,
+        linear-gradient(135deg, var(--gold), var(--blue));
+      box-shadow:
+        0 0 24px rgba(58,167,255,.18),
+        0 0 16px rgba(245,197,66,.12);
+    }
+
+    .title-col{display:flex;flex-direction:column;gap:2px}
+    h1{margin:0;font-size:1.9rem;letter-spacing:.2px;line-height:1.1}
+    .sub{color:var(--muted);margin:0}
+
+    .brand{
+      background:linear-gradient(135deg,var(--gold),var(--blue));
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;color:transparent;
+      font-weight:800;letter-spacing:.3px;
+    }
+
+    /* ---------- LAYOUT CARDS ---------- */
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media (max-width:860px){.grid{grid-template-columns:1fr}}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px}
-    .card h2{margin:0;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:1rem}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; overflow:hidden;
+    }
+    .card h2{
+      margin:0;padding:12px 16px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:1.05rem;letter-spacing:.2px
+    }
     .card .body{padding:14px 16px}
-    label{display:block;margin-bottom:6px;color:var(--muted);font-size:.92rem}
-    textarea,input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#13131a;color:#e9eef7}
+
+    label{display:block;margin-bottom:6px;color:var(--muted);font-size:.94rem}
+    textarea,input,select{
+      width:100%;padding:10px 12px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);background:#13131a;color:#e9eef7
+    }
     textarea{min-height:96px;resize:vertical}
 
-    /* Platform checkbox layout (fixed) */
-    .checks{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(140px, 1fr));
-      gap: 10px;
-      margin-top: 8px;
+    /* ---------- PLATFORM CHIPS (uniform size) ---------- */
+    .chips{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{
+      display:flex;align-items:center;gap:10px;
+      background:var(--chip);
+      border:1px solid var(--chip-border);
+      border-radius:16px; padding:10px 14px;
+      height:44px;                 /* uniform height */
+      min-width:150px;             /* consistent footprint */
+      user-select:none; cursor:pointer;
+      transition:border-color .15s ease, background .15s ease, transform .03s ease;
     }
-    @media (max-width: 900px){ .checks{ grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 600px){ .checks{ grid-template-columns: repeat(2, 1fr); } }
-    .check{
-      display:flex;align-items:center;gap:10px;background:#13131a;
-      border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 10px;min-height:44px;
+    .chip:hover{border-color:rgba(255,255,255,.24);background:#17171e}
+    .chip:active{transform:translateY(1px)}
+    .chip input{display:none}
+    .chip.selected{
+      border-color:transparent;
+      background:linear-gradient(135deg, rgba(245,197,66,.18), rgba(58,167,255,.18));
     }
-    .check input{margin:0;width:18px;height:18px}
-    .check label{margin:0;white-space:nowrap;color:var(--text);font-size:.9rem;cursor:pointer}
+    .chip svg{width:18px;height:18px;opacity:.95;flex:0 0 18px} /* icon ALWAYS same size */
+    .chip .name{font-weight:600;letter-spacing:.2px;white-space:nowrap}
 
+    /* ---------- ACTIONS ---------- */
     .actions{display:flex;align-items:center;gap:12px;margin-top:8px}
-    .btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),var(--blue))}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
-    .ghost{border:1px solid rgba(255,255,255,.15);background:transparent;color:#e9eef7}
+    .btn{
+  background: linear-gradient(135deg, #f5c542, #3aa7ff);
+  background-size: 200% 200%;
+  color: #0b0b0f;
+  font-weight: 800;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px rgba(245,197,66,.5),
+    0 0 12px rgba(58,167,255,.4),
+    0 6px 18px rgba(0,0,0,.4);
+  transition:
+    transform .05s ease,
+    filter .15s ease,
+    background-position .6s ease;
+}
+.btn:hover{
+  background-position: 100% 0;
+  filter: brightness(1.1);
+}
+.btn:active{
+  transform: translateY(1px);
+  filter: brightness(.9);
+}
     .loader{display:none;align-items:center;gap:8px;color:var(--muted)}
     .loader.show{display:flex}
     .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;animation:bounce 1s infinite ease-in-out}
     .dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
     @keyframes bounce{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
 
-    .platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:860px){.platforms{grid-template-columns:1fr}}
-    .p-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+    /* ---------- OUTPUTS ---------- */
+    .platforms{display:grid;grid-template-columns:1fr;gap:14px}
+    .p-card{
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;padding:12px 12px 10px
+    }
     .p-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-    .p-name{font-weight:700}
-    .copy{border:1px solid rgba(255,255,255,.16);background:transparent;color:#e9eef7;border-radius:8px;padding:6px 10px;cursor:pointer}
-    .text{white-space:pre-wrap}
-    .tags{margin-top:8px;color:var(--muted);font-size:.95rem}
+    .p-name{font-weight:800;letter-spacing:.4px;display:flex;align-items:center;gap:8px}
+    .copy{
+      border:1px solid rgba(255,255,255,.16);
+      background:transparent;color:#e9eef7;border-radius:8px;padding:6px 10px;cursor:pointer;
+      transition:background .15s ease, border-color .15s ease
+    }
+    .copy:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.24)}
+    .text{white-space:pre-wrap; line-height:1.55}
 
     footer{margin-top:26px;text-align:center;color:var(--muted)}
-    .grizzai-brand{
-      background: linear-gradient(135deg, var(--gold), var(--blue));
-      -webkit-background-clip:text;background-clip:text;
-      -webkit-text-fill-color:transparent;color:transparent;
-      display:inline-block;font-weight:700;position:relative;cursor:default;transition:opacity .3s ease;
-    }
-    .grizzai-brand::after{
-      content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;
-      background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.5) 50%,rgba(255,255,255,0) 100%);
-      transform:skewX(-20deg);
-    }
-    .grizzai-brand:hover::after{animation:shimmer 1.2s ease-in-out}
-    @keyframes shimmer{0%{left:-100%}100%{left:100%}}
     .ver{color:var(--muted);font-size:.9rem;margin-left:8px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <!-- HERO HEADER -->
-    <header>
-      <div class="badge"></div>
-      <div>
-        <h1><span class="grizzai-brand">GrizzAI</span> Content Automator</h1>
-        <p class="sub">Turn one idea into five platform-ready posts — instantly.<br><em>AI with Bite.</em></p>
-      </div>
-    </header>
+
+    <div class="hero">
+  <div class="badge" aria-hidden="true"></div>
+  <div class="title-col">
+    <h1><span class="brand">GrizzAI</span> Content Automator</h1>
+    <p class="sub">Turn one idea into five platform-ready posts — instantly.<br><em>AI with Bite.</em></p>
+  </div>
+</div>
+    <!-- HEADER (with shimmer that covers everything) -->
+    
 
     <div class="grid">
       <!-- INPUTS -->
@@ -102,12 +199,52 @@
           <input id="goal" placeholder="e.g., Join the waitlist at grizzai.com" />
 
           <label>Platforms</label>
-          <div class="checks">
-            <label class="check"><input type="checkbox" name="platform" value="LinkedIn" /><span>LinkedIn</span></label>
-            <label class="check"><input type="checkbox" name="platform" value="Instagram" /><span>Instagram</span></label>
-            <label class="check"><input type="checkbox" name="platform" value="X" /><span>X</span></label>
-            <label class="check"><input type="checkbox" name="platform" value="Threads" /><span>Threads</span></label>
-            <label class="check"><input type="checkbox" name="platform" value="Facebook" /><span>Facebook</span></label>
+          <div class="chips" id="chips">
+            <!-- LinkedIn -->
+            <label class="chip" data-platform="LinkedIn">
+              <input type="checkbox" name="platform" value="LinkedIn"/>
+              <svg viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0zM8 8h4.8v2.2h.07c.67-1.2 2.3-2.47 4.73-2.47C21.9 7.73 24 10 24 14.13V24h-5v-8.53c0-2.03-.72-3.41-2.52-3.41-1.38 0-2.2.93-2.56 1.83-.13.32-.16.77-.16 1.22V24H8V8z"/></svg>
+              <span class="name">LinkedIn</span>
+            </label>
+
+            <!-- Instagram -->
+            <label class="chip" data-platform="Instagram">
+              <input type="checkbox" name="platform" value="Instagram"/>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f58529"/><stop offset="50%" stop-color="#dd2a7b"/><stop offset="100%" stop-color="#8134af"/>
+                </linearGradient></defs>
+                <path fill="url(#ig)" d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm10 2H7a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3zm-5 3a5 5 0 110 10 5 5 0 010-10zm0 2.2a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6zM18.5 6.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/>
+              </svg>
+              <span class="name">Instagram</span>
+            </label>
+
+            <!-- X -->
+            <label class="chip" data-platform="X">
+              <input type="checkbox" name="platform" value="X"/>
+              <svg viewBox="0 0 24 24" fill="#e9eef7" aria-hidden="true">
+                <path d="M18.244 2H21l-6.32 7.22L22 22h-6.8l-4.6-5.8L4.2 22H2l6.76-7.73L2 2h6.88l4.2 5.46L18.244 2Zm-2.4 18h1.88L8.34 4H6.42l9.424 16Z"/>
+              </svg>
+              <span class="name">X</span>
+            </label>
+
+            <!-- Threads -->
+            <label class="chip" data-platform="Threads">
+              <input type="checkbox" name="platform" value="Threads"/>
+              <svg viewBox="0 0 24 24" fill="#e9eef7" aria-hidden="true">
+                <path d="M12.05 2c5.07 0 8.9 3.55 8.9 8.7 0 5.41-3.92 9.3-9.7 9.3-3.23 0-5.86-1.06-7.69-3.07l2-1.8c1.53 1.61 3.5 2.4 5.87 2.4 4.23 0 6.98-2.6 6.98-6.84v-.03c-.9.46-1.9.7-3 .7-3.58 0-6.38-2.6-6.38-5.98 0-2.1 1.17-3.38 3.02-3.38 1.29 0 2.32.63 3.03 1.83.61-1.12 1.74-1.83 3.22-1.83.8 0 1.55.18 2.21.52C18.6 3.62 15.7 2 12.05 2Zm2.65 5.47c-.52-.95-1.21-1.43-2.1-1.43-.94 0-1.49.6-1.49 1.68 0 2.09 1.83 3.9 4.22 3.9.83 0 1.57-.17 2.2-.5-.2-1.56-1.17-2.9-2.83-3.65Z"/>
+              </svg>
+              <span class="name">Threads</span>
+            </label>
+
+            <!-- Facebook -->
+            <label class="chip" data-platform="Facebook">
+              <input type="checkbox" name="platform" value="Facebook"/>
+              <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true">
+                <path d="M22 12.07C22 6.5 17.52 2 11.93 2 6.35 2 1.86 6.5 1.86 12.07c0 4.97 3.63 9.1 8.38 9.94v-7.03H7.93v-2.9h2.31v-2.2c0-2.28 1.36-3.54 3.44-3.54.99 0 2.03.18 2.03.18v2.24h-1.14c-1.13 0-1.48.7-1.48 1.41v1.9h2.52l-.4 2.9h-2.12v7.03c4.75-.85 8.38-4.97 8.38-9.94Z"/>
+              </svg>
+              <span class="name">Facebook</span>
+            </label>
           </div>
 
           <label for="tone">Tone</label>
@@ -120,7 +257,7 @@
 
           <div class="actions">
             <button id="generate" class="btn">Generate Content</button>
-            <button id="clear" class="btn ghost">Clear</button>
+            <button id="clear" class="ghost">Clear</button>
             <div id="loading" class="loader">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
               Generating…
@@ -133,21 +270,28 @@
       <section class="card">
         <h2>Outputs</h2>
         <div class="body">
-          <div id="empty-state" class="tags">Select platforms and click “Generate Content”.</div>
+          <div id="empty-state" class="muted">Select platforms and click “Generate Content”.</div>
           <div id="platforms" class="platforms" hidden></div>
         </div>
       </section>
     </div>
 
     <footer>
-      <p>
-        Built by <b class="grizzai-brand">GrizzAI</b> — AI with Bite.
-        <span class="ver">v1.0-M2-Verified</span>
-      </p>
+      <p>Built by <b class="brand">GrizzAI</b> — AI with Bite. <span class="ver">v1.0-M2-Verified</span></p>
     </footer>
   </div>
 
   <script>
+    // Chip selection UX
+    const chips = document.getElementById('chips');
+    chips.addEventListener('click', (e)=>{
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      const cb = chip.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      chip.classList.toggle('selected', cb.checked);
+    });
+
     // Copy helper
     async function copyText(text, btn){
       try{
@@ -161,19 +305,21 @@
       }
     }
 
-    // OpenAI call (works with your existing key-in-localStorage flow)
+    // OpenAI call
     async function callOpenAI(promptText){
-      const apiKey = localStorage.getItem('OPENAI_API_KEY') || prompt('Enter your OpenAI API key (stored locally):');
-      if(apiKey) localStorage.setItem('OPENAI_API_KEY', apiKey);
-
+      let apiKey = localStorage.getItem('OPENAI_API_KEY');
+      if(!apiKey){
+        apiKey = prompt('Enter your OpenAI API key (stored locally):');
+        if(!apiKey) throw new Error('API key required.');
+        localStorage.setItem('OPENAI_API_KEY', apiKey);
+      }
       const body = {
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are GrizzAI Content Automator. Generate concise, platform-optimized posts in the selected tone. Follow strict per-platform rules.' },
+          { role: 'system', content: 'You are GrizzAI Content Automator. Generate concise, platform-optimized posts in the selected tone. Follow native platform rules.' },
           { role: 'user', content: promptText }
         ]
       };
-
       const res = await fetch('https://api.openai.com/v1/chat/completions',{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
@@ -192,7 +338,7 @@
       const audience = document.getElementById('audience').value.trim();
       const goal = document.getElementById('goal').value.trim();
       const tone = document.getElementById('tone').value.trim() || 'Bold';
-      const platforms = Array.from(document.querySelectorAll('input[name="platform"]:checked')).map(c => c.value);
+      const platforms = [...document.querySelectorAll('input[name="platform"]:checked')].map(c => c.value);
       return { idea, audience, goal, tone, platforms };
     }
 
@@ -205,10 +351,22 @@
       return errs;
     }
 
+    function iconFor(platform){
+      switch(platform){
+        case 'LinkedIn': return '<svg viewBox="0 0 24 24" width="16" height="16" fill="#0A66C2"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0zM8 8h4.8v2.2h.07c.67-1.2 2.3-2.47 4.73-2.47C21.9 7.73 24 10 24 14.13V24h-5v-8.53c0-2.03-.72-3.41-2.52-3.41-1.38 0-2.2.93-2.56 1.83-.13.32-.16.77-.16 1.22V24H8V8z"/></svg>';
+        case 'Instagram': return '<svg viewBox="0 0 24 24" width="16" height="16"><defs><linearGradient id="ig2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f58529"/><stop offset="50%" stop-color="#dd2a7b"/><stop offset="100%" stop-color="#8134af"/></linearGradient></defs><path fill="url(#ig2)" d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm10 2H7a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3zm-5 3a5 5 0 110 10 5 5 0 010-10zm0 2.2a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6zM18.5 6.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/></svg>';
+        case 'X': return '<svg viewBox="0 0 24 24" width="16" height="16" fill="#e9eef7"><path d="M18.244 2H21l-6.32 7.22L22 22h-6.8l-4.6-5.8L4.2 22H2l6.76-7.73L2 2h6.88l4.2 5.46L18.244 2Zm-2.4 18h1.88L8.34 4H6.42l9.424 16Z"/></svg>';
+        case 'Threads': return '<svg viewBox="0 0 24 24" width="16" height="16" fill="#e9eef7"><path d="M12.05 2c5.07 0 8.9 3.55 8.9 8.7 0 5.41-3.92 9.3-9.7 9.3-3.23 0-5.86-1.06-7.69-3.07l2-1.8c1.53 1.61 3.5 2.4 5.87 2.4 4.23 0 6.98-2.6 6.98-6.84v-.03c-.9.46-1.9.7-3 .7-3.58 0-6.38-2.6-6.38-5.98 0-2.1 1.17-3.38 3.02-3.38 1.29 0 2.32.63 3.03 1.83.61-1.12 1.74-1.83 3.22-1.83.8 0 1.55.18 2.21.52C18.6 3.62 15.7 2 12.05 2Zm2.65 5.47c-.52-.95-1.21-1.43-2.1-1.43-.94 0-1.49.6-1.49 1.68 0 2.09 1.83 3.9 4.22 3.9.83 0 1.57-.17 2.2-.5-.2-1.56-1.17-2.9-2.83-3.65Z"/></svg>';
+        case 'Facebook': return '<svg viewBox="0 0 24 24" width="16" height="16" fill="#1877F2"><path d="M22 12.07C22 6.5 17.52 2 11.93 2 6.35 2 1.86 6.5 1.86 12.07c0 4.97 3.63 9.1 8.38 9.94v-7.03H7.93v-2.9h2.31v-2.2c0-2.28 1.36-3.54 3.44-3.54.99 0 2.03.18 2.03.18v2.24h-1.14c-1.13 0-1.48.7-1.48 1.41v1.9h2.52l-.4 2.9h-2.12v7.03c4.75-.85 8.38-4.97 8.38-9.94Z"/></svg>';
+        default: return '';
+      }
+    }
+
     function buildCard(platform, text){
       const card = document.createElement('div'); card.className = 'p-card';
       const head = document.createElement('div'); head.className = 'p-head';
-      const name = document.createElement('div'); name.className = 'p-name'; name.textContent = platform;
+      const name = document.createElement('div'); name.className = 'p-name';
+      name.innerHTML = iconFor(platform) + platform;
       const copyBtn = document.createElement('button'); copyBtn.className = 'copy'; copyBtn.textContent = 'Copy';
       head.appendChild(name); head.appendChild(copyBtn);
       const body = document.createElement('div'); body.className = 'text'; body.textContent = text;
@@ -237,17 +395,41 @@
     document.getElementById('generate').addEventListener('click', async ()=>{
       const brief = getBrief();
       const errs = validate(brief);
-      if(errs.length) return alert('Please fix:\n' + errs.join('\n'));
+      if(errs.length){ alert('Please fix:\n' + errs.join('\n')); return; }
       try{ await renderOutputs(brief); }
       catch(e){ alert('Error generating content:\n' + e.message); }
     });
 
     document.getElementById('clear').addEventListener('click', ()=>{
-      document.getElementById('brief').reset();
+      document.getElementById('idea').value='';
+      document.getElementById('audience').value='';
+      document.getElementById('goal').value='';
+      document.getElementById('tone').selectedIndex=0;
+      document.querySelectorAll('.chip').forEach(ch=>{
+        const cb = ch.querySelector('input'); cb.checked=false; ch.classList.remove('selected');
+      });
       document.getElementById('platforms').innerHTML = '';
       document.getElementById('platforms').hidden = true;
       document.getElementById('empty-state').hidden = false;
     });
+
+    function getBrief(){
+      const idea = document.getElementById('idea').value.trim();
+      const audience = document.getElementById('audience').value.trim();
+      const goal = document.getElementById('goal').value.trim();
+      const tone = document.getElementById('tone').value.trim() || 'Bold';
+      const platforms = [...document.querySelectorAll('input[name="platform"]:checked')].map(c => c.value);
+      return { idea, audience, goal, tone, platforms };
+    }
+
+    function validate(brief){
+      const errs = [];
+      if(!brief.idea) errs.push('Core idea / message is required.');
+      if(!brief.audience) errs.push('Audience is required.');
+      if(!brief.goal) errs.push('Goal / CTA is required.');
+      if(!brief.platforms.length) errs.push('Please select at least one platform.');
+      return errs;
+    }
   </script>
 </body>
 </html>
