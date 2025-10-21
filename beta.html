@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Join the GrizzAI Beta — AI with Bite</title>
+  <style>
+    :root{--bg:#0b0b0f;--card:#13131a;--muted:#9aa3b2;--text:#e9eef7;--gold:#f5c542;--blue:#3aa7ff}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:var(--bg);color:var(--text);line-height:1.45}
+    .wrap{max-width:720px;margin:0 auto;padding:32px 16px 60px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--blue))}
+    h1{margin:0;font-size:1.25rem}
+    .grizzai{background:linear-gradient(135deg,var(--gold),var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+    .sub{color:var(--muted);margin-top:6px}
+    .btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),var(--blue))}
+    .ghost{border:1px solid rgba(255,255,255,.15);background:transparent;color:#e9eef7}
+    main{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
+    label{display:block;margin:10px 0 6px;color:var(--muted);font-size:.95rem}
+    input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#13131a;color:#e9eef7}
+    textarea{min-height:100px;resize:vertical}
+    .row{display:flex;gap:10px;margin-top:12px}
+    .row > *{flex:1}
+    .small{font-size:.9rem;color:var(--muted);margin-top:8px}
+    footer{margin-top:26px;text-align:center;color:var(--muted)}
+    .ok{display:none;margin-top:10px;color:#9ff59f}
+    .err{display:none;margin-top:10px;color:#ff9f9f}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="badge"></div>
+        <div>
+          <h1><span class="grizzai">GrizzAI</span> Beta Waitlist</h1>
+          <div class="sub">Be first to try the Content Automator — <em>AI with Bite</em>.</div>
+        </div>
+      </div>
+      <a class="btn ghost" href="./index.html">← Back to App</a>
+    </header>
+
+    <main>
+      <p>Tell us where to send early access. We’ll invite small batches so you get direct support and faster improvements.</p>
+
+      <!-- Simple local form: opens your email client for now -->
+      <form id="betaForm">
+        <label for="name">Name</label>
+        <input id="name" placeholder="Your name" required>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required>
+
+        <label for="use">How would you use GrizzAI?</label>
+        <textarea id="use" placeholder="Tell us your niche, platforms, or goals…"></textarea>
+
+        <div class="row">
+          <button type="submit" class="btn">Join Early Access</button>
+          <a class="btn ghost" href="./index.html">Preview the App</a>
+        </div>
+        <div class="small">No spam. You’ll hear from us when a slot opens.</div>
+        <div id="ok" class="ok">Thanks! Your email client should open now—just hit send.</div>
+        <div id="err" class="err">Hmm—couldn’t open your mail app. Copy the email below and send manually.</div>
+      </form>
+
+      <div class="small" style="margin-top:12px">
+        Or email us directly: <code>beta@grizzai.com</code> (placeholder)
+      </div>
+    </main>
+
+    <footer>
+      <p>Built by <b class="grizzai">GrizzAI</b> — AI with Bite.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Mailto placeholder. Later you can switch to Formspree or a tiny backend.
+    document.getElementById('betaForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = encodeURIComponent(document.getElementById('name').value.trim());
+      const email = encodeURIComponent(document.getElementById('email').value.trim());
+      const use = encodeURIComponent(document.getElementById('use').value.trim());
+      const subject = encodeURIComponent('GrizzAI Beta Waitlist');
+      const body = encodeURIComponent(`Name: ${decodeURIComponent(name)}\nEmail: ${decodeURIComponent(email)}\nUse case: ${decodeURIComponent(use)}`);
+      const mailto = `mailto:beta@grizzai.com?subject=${subject}&body=${body}`; // replace with your email later
+      const ok = document.getElementById('ok'); const err = document.getElementById('err');
+      try{
+        window.location.href = mailto;
+        ok.style.display='block'; err.style.display='none';
+      }catch{
+        ok.style.display='none'; err.style.display='block';
+      }
+    });
+  </script>
+</body>
+</html>
